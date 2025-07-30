@@ -8,7 +8,9 @@
 #include <cstdlib> 
 #include <cstring> 
 #include "ivf_flat.h"
-#include <algorithm> 
+#include <algorithm>
+#include <faiss/IndexFlat.h>
+#include <random> 
 
 using namespace std; 
 
@@ -91,20 +93,41 @@ void printFloatVector(const vector<float>& vec) {
 
 
 int main() {
-    size_t d = 128; 
-    size_t n = 1000000;
-    vector<vector<float>> base = toVector2D(fvecs_read("/users/wajeehj/pathfinder/data/sift/sift_base.fvecs", &d, &n), d, n);
-    vector<vector<float>> learn = toVector2D(fvecs_read("/users/wajeehj/pathfinder/data/sift/sift_learn.fvecs", &d, &n), d, n);
-    vector<vector<float>> query = toVector2D(fvecs_read("/users/wajeehj/pathfinder/data/sift/sift_query.fvecs", &d, &n), d, n);
-    vector<vector<int>> ground_truth = toVector2DInt(ivecs_read("/users/wajeehj/pathfinder/data/sift/sift_groundtruth.ivecs", &d, &n), d, n); 
+    // vector<vector<float>> base = toVector2D(fvecs_read("/users/wajeehj/pathfinder/data/sift/sift_base.fvecs", &d, &n), d, n);
+    // vector<vector<float>> learn = toVector2D(fvecs_read("/users/wajeehj/pathfinder/data/sift/sift_learn.fvecs", &d, &n), d, n);
+    // vector<vector<float>> query = toVector2D(fvecs_read("/users/wajeehj/pathfinder/data/sift/sift_query.fvecs", &d, &n), d, n);
+    // vector<vector<int>> ground_truth = toVector2DInt(ivecs_read("/users/wajeehj/pathfinder/data/sift/sift_groundtruth.ivecs", &d, &n), d, n); 
 
-    int dim = base[0].size(); 
-    int nprobe = 10; 
-    int nlist = 1000; 
-    int k = 10; 
+    int d = 64;      // dimension
+    int nb = 100000; // database size
+    int nq = 10000;  // nb of queries
+
+    std::mt19937 rng;
+    std::uniform_real_distribution<> distrib;
+
+    float* xb = new float[d * nb];
+    float* xq = new float[d * nq];
+
+    for (int i = 0; i < nb; i++) {
+        for (int j = 0; j < d; j++) {
+            xb[d * i + j] = distrib(rng);
+        }
+        xb[d * i] += i / 1000.;
+    }
+
+    for (int i = 0; i < nq; i++) {
+        for (int j = 0; j < d; j++) {
+            xq[d * i + j] = distrib(rng);
+        }
+        xq[d * i] += i / 1000.;
+    }
+
+    faiss::IndexFlatL2 index(d); // call constructor
+
+    
 
     cout << "training the index" << endl; 
-    IndexIVFFlat index(dim, nprobe, nlist); 
+    IndexIVFFlat index(d, nprobe, nlist); 
     index.train(learn); 
 
     cout << "adding the data" << endl; 
