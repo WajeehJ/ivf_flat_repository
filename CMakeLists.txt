@@ -26,7 +26,7 @@ include_directories(
 set(SRC_FILES
     flat/ivf_flat.cpp
     ../src/distance.cpp
-    flat/testing2.cpp
+    flat/testing.cpp
 )
 
 find_library(FAISS_LIB faiss PATHS ${CMAKE_SOURCE_DIR}/faiss/build/faiss)
