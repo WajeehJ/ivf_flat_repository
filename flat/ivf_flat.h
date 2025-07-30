@@ -18,7 +18,6 @@ class IndexIVFFlat {
         float euclideanDistance(const vector<float>& a, const vector<float>& b); 
         vector<float> flattenDataset(const vector<vector<float>>& dataset);
         vector<vector<float>> convertToVectorOfVectors(const float* centroids, int k, int d);
-        vector<int> pickRandomIndices(int size, int n);
         int dim; 
         int nprobe; 
         int nlist; 
