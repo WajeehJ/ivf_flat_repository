@@ -4,6 +4,9 @@ project(ivf_flat_repository)
 find_package(OpenMP REQUIRED)
 
 
+add_compile_options(-march=native)
+
+
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

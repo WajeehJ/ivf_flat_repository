@@ -34,7 +34,7 @@ void IndexIVFFlat::train(vector<vector<float>> dataset) {
     cp.niter = 20; 
     faiss::Clustering clus(dim, nlist, cp);
     faiss::IndexFlatL2 quantizer(dim);
-    clus.train(nlist, flattenDataset(dataset).data(), quantizer);
+    clus.train(dataset.size(), flattenDataset(dataset).data(), quantizer);
 
     centroids = convertToVectorOfVectors(clus.centroids.data(), nlist, dim); 
 
@@ -74,7 +74,7 @@ vector<vector<int>> IndexIVFFlat::query(vector<vector<float>> dataset, int k) {
     for(int i = 0; i < dataset.size(); i++) {
         std::priority_queue<Pair, std::vector<Pair>, Compare> pq;
         for(int j = 0; j < centroids.size(); j++) {
-            pq.push({euclideanDistance(centroids.at(j), dataset.at(i)), i}); 
+            pq.push({euclideanDistance(centroids.at(j), dataset.at(i)), j}); 
         }
 
         std::priority_queue<Pair, std::vector<Pair>, Compare> actual_vectors;
@@ -93,8 +93,8 @@ vector<vector<int>> IndexIVFFlat::query(vector<vector<float>> dataset, int k) {
         vector<int> result; 
         result.resize(k); 
         for(int j = 0; j < k; j++) {
-            auto [distance, index] = pq.top(); 
-            pq.pop(); 
+            auto [distance, index] = actual_vectors.top(); 
+            actual_vectors.pop(); 
             result[j] = index; 
         }
 
