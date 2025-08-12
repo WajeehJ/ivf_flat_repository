@@ -29,6 +29,7 @@ include_directories(
 set(SRC_FILES
     flat/ivf_flat.cpp
     ../src/distance.cpp
+    ../src/storage.cpp
     flat/testing.cpp
 )
 

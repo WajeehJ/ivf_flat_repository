@@ -27,28 +27,33 @@ void printVector(const vector<float>& vec) {
 
 
 
-void IndexIVFFlat::train(vector<vector<float>> dataset) {
+void IndexIVFFlat::train(std::shared_ptr<IStorage> dataset) {
     //perform k means clustering 
+
+    auto float_storage = std::dynamic_pointer_cast<ANNS::Storage<float>>(dataset);
+
     faiss::ClusteringParameters cp; 
     cp.verbose = false; 
     cp.niter = 20; 
     faiss::Clustering clus(dim, nlist, cp);
     faiss::IndexFlatL2 quantizer(dim);
-    clus.train(dataset.size(), flattenDataset(dataset).data(), quantizer);
+    clus.train(float_storage->get_num_points(), float_storage->vecs, quantizer);
 
     centroids = convertToVectorOfVectors(clus.centroids.data(), nlist, dim); 
 
 }
 
 
-void IndexIVFFlat::add(vector<vector<float>> dataset) {
+void IndexIVFFlat::add(std::shared_ptr<IStorage> dataset) {
 
-    database = dataset; 
-    for(int i = 0; i < dataset.size(); i++) {
+    base_storage = dataset; 
+
+    auto float_storage = std::dynamic_pointer_cast<ANNS::Storage<float>>(dataset);
+    for(int i = 0; i < float_storage->get_num_points(); i++) {
         int best_index = 0; 
-        float best_distance = euclideanDistance(dataset[i], centroids[0]); 
+        float best_distance = euclideanDistance(float_storage->get_vector(i), reinterpret_cast<const char *>(centroids[0].data())); 
         for(int j = 1; j < centroids.size(); j++) {
-            float distance = euclideanDistance(dataset[i], centroids[j]); 
+            float distance = euclideanDistance(float_storage->get_vector(i), reinterpret_cast<const char *>(centroids[0].data())); 
             if(distance < best_distance) {
                 best_distance = distance; 
                 best_index = j; 
@@ -68,13 +73,17 @@ struct Compare {
     }
 };
 
-vector<vector<int>> IndexIVFFlat::query(vector<vector<float>> dataset, int k) {
-    vector<vector<int>> results; 
-    results.resize(dataset.size()); 
-    for(int i = 0; i < dataset.size(); i++) {
+void IndexIVFFlat::query(std::shared_ptr<IStorage> dataset, int k, std::pair<IdxType, float>* results) {
+    auto float_storage = std::dynamic_pointer_cast<ANNS::Storage<float>>(dataset);
+    auto base_storage_pointer = std::dynamic_pointer_cast<ANNS::Storage<float>>(base_storage);
+    std::pair<IdxType, float>* _results = results; 
+    for(int i = 0; i < float_storage->get_num_points(); i++) {
         std::priority_queue<Pair, std::vector<Pair>, Compare> pq;
         for(int j = 0; j < centroids.size(); j++) {
-            pq.push({euclideanDistance(centroids.at(j), dataset.at(i)), j}); 
+            pq.push(std::make_pair(
+                euclideanDistance(reinterpret_cast<const char *>(centroids[j].data()),
+                    float_storage->get_vector(i)),
+                j));
         }
 
         std::priority_queue<Pair, std::vector<Pair>, Compare> actual_vectors;
@@ -83,35 +92,36 @@ vector<vector<int>> IndexIVFFlat::query(vector<vector<float>> dataset, int k) {
             auto [distance, index] = pq.top(); 
             pq.pop(); 
             vector<int> centroid_vectors = inverted_list[index]; 
-            for(int indexes : centroid_vectors) {
-                actual_vectors.push({euclideanDistance(database[indexes], dataset[i]), indexes}); 
+            for (int indexes : centroid_vectors) {
+                actual_vectors.push(
+                    std::pair<float, int>(
+                    euclideanDistance(base_storage_pointer->get_vector(indexes),
+                        float_storage->get_vector(i)),
+                        indexes)
+                    );
             }
         }
 
 
 
-        vector<int> result; 
-        result.resize(k); 
-        for(int j = 0; j < k; j++) {
+        for(int j = (i - 1) * k; j < ((i - 1) * k) + k; j++) {
             auto [distance, index] = actual_vectors.top(); 
             actual_vectors.pop(); 
-            result[j] = index; 
-        }
 
-        results[i] = result; 
+            _results[j] = { index, distance }; 
+        }
     }
 
-    return results; 
 }
 
 
-float IndexIVFFlat::euclideanDistance(const vector<float>& a, const vector<float>& b) {
+float IndexIVFFlat::euclideanDistance(const char* a, const char* b) {
     ANNS::FloatL2DistanceHandler distance_handler; 
 
     float dist = distance_handler.compute(
-        reinterpret_cast<const char *>(a.data()),
-        reinterpret_cast<const char *>(b.data()),
-        a.size()
+        a,
+        b,
+        dim
     );
 
     return dist; 

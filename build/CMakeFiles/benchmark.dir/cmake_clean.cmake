@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/benchmark.dir/flat/testing.cpp.o.d"
   "CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/distance.cpp.o"
   "CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/distance.cpp.o.d"
+  "CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/storage.cpp.o"
+  "CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/storage.cpp.o.d"
   "benchmark"
   "benchmark.pdb"
 )
