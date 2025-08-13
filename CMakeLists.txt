@@ -1,48 +1,29 @@
 cmake_minimum_required(VERSION 3.10)
-project(ivf_flat_repository)
-
-find_package(OpenMP REQUIRED)
+project(main_project)
 
 
-add_compile_options(-march=native)
+
+# Boost
+# set(Boost_INCLUDEDIRS "specify if needed")
+# set(Boost_ROOT "specify if needed")
+# set(Boost_DIR "specify if needed")
+find_package(Boost COMPONENTS REQUIRED program_options filesystem)
+message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+if (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIR})
+else()
+    message(FATAL_ERROR "no Boost supprot")
+endif()
 
 
-# Set the C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# OpenMP
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+else()
+    message(FATAL_ERROR "no OpenMP supprot")
+endif()
 
-set(CMAKE_BUILD_TYPE Debug)
-
-# Disable GPU and Python bindings
-add_definitions(-DFAISS_NO_GPU)
-add_definitions(-DFAISS_NO_PYTHON)
-
-# Include directories for FAISS and other project components
-include_directories(
-    ${CMAKE_SOURCE_DIR}/faiss
-    ${CMAKE_SOURCE_DIR}/faiss/build
-    ${CMAKE_SOURCE_DIR}/build/faiss
-    ${CMAKE_SOURCE_DIR}/../include
-)
-
-# Source files
-set(SRC_FILES
-    flat/ivf_flat.cpp
-    ../src/distance.cpp
-    ../src/storage.cpp
-    flat/testing.cpp
-)
-
-find_library(FAISS_LIB faiss PATHS ${CMAKE_SOURCE_DIR}/faiss/build/faiss)
-
-# Create executable
-add_executable(benchmark ${SRC_FILES})
-
-target_link_libraries(benchmark PRIVATE ${FAISS_LIB} OpenMP::OpenMP_CXX -lopenblas)
-
-# Link required libraries
-find_package(Threads REQUIRED)
-target_link_libraries(benchmark PRIVATE Threads::Threads)
-
-# Recommended compile options
-target_compile_options(benchmark PRIVATE -O3 -Wall -Wextra)
+add_subdirectory(flat) # builds ivf_flat library
+add_subdirectory(testing) #builds testing 

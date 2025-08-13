@@ -117,113 +117,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named benchmark
+# Target rules for targets named ivf_flat
 
 # Build rule for target.
-benchmark: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 benchmark
-.PHONY : benchmark
+ivf_flat: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ivf_flat
+.PHONY : ivf_flat
 
 # fast build rule for target.
-benchmark/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/build
-.PHONY : benchmark/fast
+ivf_flat/fast:
+	$(MAKE) $(MAKESILENT) -f flat/CMakeFiles/ivf_flat.dir/build.make flat/CMakeFiles/ivf_flat.dir/build
+.PHONY : ivf_flat/fast
 
-flat/ivf_flat.o: flat/ivf_flat.cpp.o
-.PHONY : flat/ivf_flat.o
+#=============================================================================
+# Target rules for targets named test_ivf_flat
 
-# target to build an object file
-flat/ivf_flat.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/flat/ivf_flat.cpp.o
-.PHONY : flat/ivf_flat.cpp.o
+# Build rule for target.
+test_ivf_flat: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_ivf_flat
+.PHONY : test_ivf_flat
 
-flat/ivf_flat.i: flat/ivf_flat.cpp.i
-.PHONY : flat/ivf_flat.i
-
-# target to preprocess a source file
-flat/ivf_flat.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/flat/ivf_flat.cpp.i
-.PHONY : flat/ivf_flat.cpp.i
-
-flat/ivf_flat.s: flat/ivf_flat.cpp.s
-.PHONY : flat/ivf_flat.s
-
-# target to generate assembly for a file
-flat/ivf_flat.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/flat/ivf_flat.cpp.s
-.PHONY : flat/ivf_flat.cpp.s
-
-flat/testing.o: flat/testing.cpp.o
-.PHONY : flat/testing.o
-
-# target to build an object file
-flat/testing.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/flat/testing.cpp.o
-.PHONY : flat/testing.cpp.o
-
-flat/testing.i: flat/testing.cpp.i
-.PHONY : flat/testing.i
-
-# target to preprocess a source file
-flat/testing.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/flat/testing.cpp.i
-.PHONY : flat/testing.cpp.i
-
-flat/testing.s: flat/testing.cpp.s
-.PHONY : flat/testing.s
-
-# target to generate assembly for a file
-flat/testing.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/flat/testing.cpp.s
-.PHONY : flat/testing.cpp.s
-
-users/wajeehj/pathfinder/codes/src/distance.o: users/wajeehj/pathfinder/codes/src/distance.cpp.o
-.PHONY : users/wajeehj/pathfinder/codes/src/distance.o
-
-# target to build an object file
-users/wajeehj/pathfinder/codes/src/distance.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/distance.cpp.o
-.PHONY : users/wajeehj/pathfinder/codes/src/distance.cpp.o
-
-users/wajeehj/pathfinder/codes/src/distance.i: users/wajeehj/pathfinder/codes/src/distance.cpp.i
-.PHONY : users/wajeehj/pathfinder/codes/src/distance.i
-
-# target to preprocess a source file
-users/wajeehj/pathfinder/codes/src/distance.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/distance.cpp.i
-.PHONY : users/wajeehj/pathfinder/codes/src/distance.cpp.i
-
-users/wajeehj/pathfinder/codes/src/distance.s: users/wajeehj/pathfinder/codes/src/distance.cpp.s
-.PHONY : users/wajeehj/pathfinder/codes/src/distance.s
-
-# target to generate assembly for a file
-users/wajeehj/pathfinder/codes/src/distance.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/distance.cpp.s
-.PHONY : users/wajeehj/pathfinder/codes/src/distance.cpp.s
-
-users/wajeehj/pathfinder/codes/src/storage.o: users/wajeehj/pathfinder/codes/src/storage.cpp.o
-.PHONY : users/wajeehj/pathfinder/codes/src/storage.o
-
-# target to build an object file
-users/wajeehj/pathfinder/codes/src/storage.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/storage.cpp.o
-.PHONY : users/wajeehj/pathfinder/codes/src/storage.cpp.o
-
-users/wajeehj/pathfinder/codes/src/storage.i: users/wajeehj/pathfinder/codes/src/storage.cpp.i
-.PHONY : users/wajeehj/pathfinder/codes/src/storage.i
-
-# target to preprocess a source file
-users/wajeehj/pathfinder/codes/src/storage.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/storage.cpp.i
-.PHONY : users/wajeehj/pathfinder/codes/src/storage.cpp.i
-
-users/wajeehj/pathfinder/codes/src/storage.s: users/wajeehj/pathfinder/codes/src/storage.cpp.s
-.PHONY : users/wajeehj/pathfinder/codes/src/storage.s
-
-# target to generate assembly for a file
-users/wajeehj/pathfinder/codes/src/storage.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/users/wajeehj/pathfinder/codes/src/storage.cpp.s
-.PHONY : users/wajeehj/pathfinder/codes/src/storage.cpp.s
+# fast build rule for target.
+test_ivf_flat/fast:
+	$(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_flat.dir/build.make testing/CMakeFiles/test_ivf_flat.dir/build
+.PHONY : test_ivf_flat/fast
 
 # Help Target
 help:
@@ -233,19 +150,8 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... benchmark"
-	@echo "... flat/ivf_flat.o"
-	@echo "... flat/ivf_flat.i"
-	@echo "... flat/ivf_flat.s"
-	@echo "... flat/testing.o"
-	@echo "... flat/testing.i"
-	@echo "... flat/testing.s"
-	@echo "... users/wajeehj/pathfinder/codes/src/distance.o"
-	@echo "... users/wajeehj/pathfinder/codes/src/distance.i"
-	@echo "... users/wajeehj/pathfinder/codes/src/distance.s"
-	@echo "... users/wajeehj/pathfinder/codes/src/storage.o"
-	@echo "... users/wajeehj/pathfinder/codes/src/storage.i"
-	@echo "... users/wajeehj/pathfinder/codes/src/storage.s"
+	@echo "... ivf_flat"
+	@echo "... test_ivf_flat"
 .PHONY : help
 
 

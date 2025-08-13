@@ -1,0 +1,2 @@
+/usr/bin/ar qc ivf_flat/libivf_flat.a CMakeFiles/ivf_flat.dir/ivf_flat.cpp.o CMakeFiles/ivf_flat.dir/users/wajeehj/pathfinder/codes/src/distance.cpp.o CMakeFiles/ivf_flat.dir/users/wajeehj/pathfinder/codes/src/storage.cpp.o
+/usr/bin/ranlib ivf_flat/libivf_flat.a

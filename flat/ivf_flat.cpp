@@ -7,7 +7,8 @@
 #include <faiss/Clustering.h>
 #include <faiss/IndexFlat.h>  // needed as a temporary quantizer
 
-using namespace std; 
+using namespace std;
+using namespace ANNS;  
 
 
 IndexIVFFlat::IndexIVFFlat(int d, int np, int nl) : dim(d), nprobe(np), nlist(nl) {
@@ -37,28 +38,38 @@ void IndexIVFFlat::train(std::shared_ptr<IStorage> dataset) {
     cp.niter = 20; 
     faiss::Clustering clus(dim, nlist, cp);
     faiss::IndexFlatL2 quantizer(dim);
-    clus.train(float_storage->get_num_points(), float_storage->vecs, quantizer);
+    vector<float> data; 
+    data.reserve(float_storage->get_num_points()); 
+    for(int i = 0; i < float_storage->get_num_points(); i++) {
+        float* v = reinterpret_cast<float*>(float_storage->get_vector(i));
+        data.insert(data.end(), v, v + dim);
+    }
+    
+    clus.train(float_storage->get_num_points(), data.data(), quantizer);
+
 
     centroids = convertToVectorOfVectors(clus.centroids.data(), nlist, dim); 
+    std::cout << "centroids" << centroids.size() << std::endl;
 
 }
 
 
 void IndexIVFFlat::add(std::shared_ptr<IStorage> dataset) {
-
-    base_storage = dataset; 
-
     auto float_storage = std::dynamic_pointer_cast<ANNS::Storage<float>>(dataset);
+    base_storage.reserve(float_storage->get_num_points());
     for(int i = 0; i < float_storage->get_num_points(); i++) {
         int best_index = 0; 
-        float best_distance = euclideanDistance(float_storage->get_vector(i), reinterpret_cast<const char *>(centroids[0].data())); 
+        float* v = reinterpret_cast<float*>(float_storage->get_vector(i));
+        float best_distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[0].data())); 
         for(int j = 1; j < centroids.size(); j++) {
-            float distance = euclideanDistance(float_storage->get_vector(i), reinterpret_cast<const char *>(centroids[0].data())); 
+            float distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[0].data())); 
             if(distance < best_distance) {
                 best_distance = distance; 
                 best_index = j; 
             }
         }
+
+        base_storage.emplace_back(v, v + dim); 
 
         inverted_list[best_index].push_back(i); 
     }
@@ -75,7 +86,6 @@ struct Compare {
 
 void IndexIVFFlat::query(std::shared_ptr<IStorage> dataset, int k, std::pair<IdxType, float>* results) {
     auto float_storage = std::dynamic_pointer_cast<ANNS::Storage<float>>(dataset);
-    auto base_storage_pointer = std::dynamic_pointer_cast<ANNS::Storage<float>>(base_storage);
     std::pair<IdxType, float>* _results = results; 
     for(int i = 0; i < float_storage->get_num_points(); i++) {
         std::priority_queue<Pair, std::vector<Pair>, Compare> pq;
@@ -95,7 +105,7 @@ void IndexIVFFlat::query(std::shared_ptr<IStorage> dataset, int k, std::pair<Idx
             for (int indexes : centroid_vectors) {
                 actual_vectors.push(
                     std::pair<float, int>(
-                    euclideanDistance(base_storage_pointer->get_vector(indexes),
+                    euclideanDistance(reinterpret_cast<const char *>(base_storage[indexes].data()),
                         float_storage->get_vector(i)),
                         indexes)
                     );
@@ -104,11 +114,10 @@ void IndexIVFFlat::query(std::shared_ptr<IStorage> dataset, int k, std::pair<Idx
 
 
 
-        for(int j = (i - 1) * k; j < ((i - 1) * k) + k; j++) {
+        for(int j = 0; j < k; j++) {
             auto [distance, index] = actual_vectors.top(); 
             actual_vectors.pop(); 
-
-            _results[j] = { index, distance }; 
+            _results[i * k + j] = { index, distance }; 
         }
     }
 

@@ -1,0 +1,3 @@
+/users/wajeehj/pathfinder/codes/ivf_flat_repository/flat/build/CMakeFiles/ivf_flat.dir
+/users/wajeehj/pathfinder/codes/ivf_flat_repository/flat/build/CMakeFiles/edit_cache.dir
+/users/wajeehj/pathfinder/codes/ivf_flat_repository/flat/build/CMakeFiles/rebuild_cache.dir

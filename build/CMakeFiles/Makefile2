@@ -63,52 +63,126 @@ CMAKE_BINARY_DIR = /users/wajeehj/pathfinder/codes/ivf_flat_repository/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/benchmark.dir/all
+all: flat/all
+all: testing/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/benchmark.dir/codegen
+codegen: flat/codegen
+codegen: testing/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: flat/preinstall
+preinstall: testing/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/benchmark.dir/clean
+clean: flat/clean
+clean: testing/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/benchmark.dir
+# Directory level rules for directory flat
+
+# Recursive "all" directory target.
+flat/all: flat/CMakeFiles/ivf_flat.dir/all
+.PHONY : flat/all
+
+# Recursive "codegen" directory target.
+flat/codegen: flat/CMakeFiles/ivf_flat.dir/codegen
+.PHONY : flat/codegen
+
+# Recursive "preinstall" directory target.
+flat/preinstall:
+.PHONY : flat/preinstall
+
+# Recursive "clean" directory target.
+flat/clean: flat/CMakeFiles/ivf_flat.dir/clean
+.PHONY : flat/clean
+
+#=============================================================================
+# Directory level rules for directory testing
+
+# Recursive "all" directory target.
+testing/all: testing/CMakeFiles/test_ivf_flat.dir/all
+.PHONY : testing/all
+
+# Recursive "codegen" directory target.
+testing/codegen: testing/CMakeFiles/test_ivf_flat.dir/codegen
+.PHONY : testing/codegen
+
+# Recursive "preinstall" directory target.
+testing/preinstall:
+.PHONY : testing/preinstall
+
+# Recursive "clean" directory target.
+testing/clean: testing/CMakeFiles/test_ivf_flat.dir/clean
+.PHONY : testing/clean
+
+#=============================================================================
+# Target rules for target flat/CMakeFiles/ivf_flat.dir
 
 # All Build rule for target.
-CMakeFiles/benchmark.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target benchmark"
-.PHONY : CMakeFiles/benchmark.dir/all
+flat/CMakeFiles/ivf_flat.dir/all:
+	$(MAKE) $(MAKESILENT) -f flat/CMakeFiles/ivf_flat.dir/build.make flat/CMakeFiles/ivf_flat.dir/depend
+	$(MAKE) $(MAKESILENT) -f flat/CMakeFiles/ivf_flat.dir/build.make flat/CMakeFiles/ivf_flat.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles --progress-num=1,2,3,4 "Built target ivf_flat"
+.PHONY : flat/CMakeFiles/ivf_flat.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/benchmark.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles 5
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/benchmark.dir/all
+flat/CMakeFiles/ivf_flat.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 flat/CMakeFiles/ivf_flat.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles 0
-.PHONY : CMakeFiles/benchmark.dir/rule
+.PHONY : flat/CMakeFiles/ivf_flat.dir/rule
 
 # Convenience name for target.
-benchmark: CMakeFiles/benchmark.dir/rule
-.PHONY : benchmark
+ivf_flat: flat/CMakeFiles/ivf_flat.dir/rule
+.PHONY : ivf_flat
 
 # codegen rule for target.
-CMakeFiles/benchmark.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles --progress-num=1,2,3,4,5 "Finished codegen for target benchmark"
-.PHONY : CMakeFiles/benchmark.dir/codegen
+flat/CMakeFiles/ivf_flat.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f flat/CMakeFiles/ivf_flat.dir/build.make flat/CMakeFiles/ivf_flat.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles --progress-num=1,2,3,4 "Finished codegen for target ivf_flat"
+.PHONY : flat/CMakeFiles/ivf_flat.dir/codegen
 
 # clean rule for target.
-CMakeFiles/benchmark.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark.dir/build.make CMakeFiles/benchmark.dir/clean
-.PHONY : CMakeFiles/benchmark.dir/clean
+flat/CMakeFiles/ivf_flat.dir/clean:
+	$(MAKE) $(MAKESILENT) -f flat/CMakeFiles/ivf_flat.dir/build.make flat/CMakeFiles/ivf_flat.dir/clean
+.PHONY : flat/CMakeFiles/ivf_flat.dir/clean
+
+#=============================================================================
+# Target rules for target testing/CMakeFiles/test_ivf_flat.dir
+
+# All Build rule for target.
+testing/CMakeFiles/test_ivf_flat.dir/all: flat/CMakeFiles/ivf_flat.dir/all
+	$(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_flat.dir/build.make testing/CMakeFiles/test_ivf_flat.dir/depend
+	$(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_flat.dir/build.make testing/CMakeFiles/test_ivf_flat.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles --progress-num=5,6 "Built target test_ivf_flat"
+.PHONY : testing/CMakeFiles/test_ivf_flat.dir/all
+
+# Build rule for subdir invocation for target.
+testing/CMakeFiles/test_ivf_flat.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 testing/CMakeFiles/test_ivf_flat.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles 0
+.PHONY : testing/CMakeFiles/test_ivf_flat.dir/rule
+
+# Convenience name for target.
+test_ivf_flat: testing/CMakeFiles/test_ivf_flat.dir/rule
+.PHONY : test_ivf_flat
+
+# codegen rule for target.
+testing/CMakeFiles/test_ivf_flat.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_flat.dir/build.make testing/CMakeFiles/test_ivf_flat.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/CMakeFiles --progress-num=5,6 "Finished codegen for target test_ivf_flat"
+.PHONY : testing/CMakeFiles/test_ivf_flat.dir/codegen
+
+# clean rule for target.
+testing/CMakeFiles/test_ivf_flat.dir/clean:
+	$(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_flat.dir/build.make testing/CMakeFiles/test_ivf_flat.dir/clean
+.PHONY : testing/CMakeFiles/test_ivf_flat.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
