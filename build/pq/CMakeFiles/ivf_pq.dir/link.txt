@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../ivf_pq/libivf_pq.a CMakeFiles/ivf_pq.dir/ivf_pq.cpp.o CMakeFiles/ivf_pq.dir/users/wajeehj/pathfinder/codes/src/distance.cpp.o CMakeFiles/ivf_pq.dir/users/wajeehj/pathfinder/codes/src/storage.cpp.o
+/usr/bin/ranlib ../ivf_pq/libivf_pq.a

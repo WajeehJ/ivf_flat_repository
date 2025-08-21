@@ -16,3 +16,6 @@ set(ANNS_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../build/src/libANNS.a)
 
 add_executable(test_ivf_flat test_ivf_flat.cpp)
 target_link_libraries(test_ivf_flat PRIVATE ivf_flat ${ANNS_LIB_PATH} Boost::program_options)
+
+add_executable(test_ivf_pq test_ivf_pq.cpp)
+target_link_libraries(test_ivf_pq PRIVATE ivf_pq ${ANNS_LIB_PATH} Boost::program_options)

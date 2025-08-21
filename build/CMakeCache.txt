@@ -285,6 +285,18 @@ ivf_flat_lib_IS_TOP_LEVEL:STATIC=OFF
 //Value Computed by CMake
 ivf_flat_lib_SOURCE_DIR:STATIC=/users/wajeehj/pathfinder/codes/ivf_flat_repository/flat
 
+//Dependencies for the target
+ivf_pq_LIB_DEPENDS:STATIC=general;/users/wajeehj/pathfinder/codes/ivf_flat_repository/faiss/build/faiss/libfaiss.so;general;-lopenblas;
+
+//Value Computed by CMake
+ivf_pq_lib_BINARY_DIR:STATIC=/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/pq
+
+//Value Computed by CMake
+ivf_pq_lib_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+ivf_pq_lib_SOURCE_DIR:STATIC=/users/wajeehj/pathfinder/codes/ivf_flat_repository/pq
+
 //Value Computed by CMake
 main_project_BINARY_DIR:STATIC=/users/wajeehj/pathfinder/codes/ivf_flat_repository/build
 
@@ -405,7 +417,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=4
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

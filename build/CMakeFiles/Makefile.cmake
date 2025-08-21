@@ -12,6 +12,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/4.1.0/CMakeCXXCompiler.cmake"
   "CMakeFiles/4.1.0/CMakeSystem.cmake"
   "/users/wajeehj/pathfinder/codes/ivf_flat_repository/flat/CMakeLists.txt"
+  "/users/wajeehj/pathfinder/codes/ivf_flat_repository/pq/CMakeLists.txt"
   "/users/wajeehj/pathfinder/codes/ivf_flat_repository/testing/CMakeLists.txt"
   "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake"
   "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfigVersion.cmake"
@@ -76,11 +77,14 @@ set(CMAKE_MAKEFILE_OUTPUTS
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "flat/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "pq/CMakeFiles/CMakeDirectoryInformation.cmake"
   "testing/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "flat/CMakeFiles/ivf_flat.dir/DependInfo.cmake"
+  "pq/CMakeFiles/ivf_pq.dir/DependInfo.cmake"
   "testing/CMakeFiles/test_ivf_flat.dir/DependInfo.cmake"
+  "testing/CMakeFiles/test_ivf_pq.dir/DependInfo.cmake"
   )

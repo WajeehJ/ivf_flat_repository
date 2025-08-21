@@ -26,4 +26,5 @@ else()
 endif()
 
 add_subdirectory(flat) # builds ivf_flat library
+add_subdirectory(pq) # builds ivf_flat library
 add_subdirectory(testing) #builds testing 

@@ -3,6 +3,10 @@
 /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/flat/CMakeFiles/ivf_flat.dir
 /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/flat/CMakeFiles/edit_cache.dir
 /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/flat/CMakeFiles/rebuild_cache.dir
+/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/pq/CMakeFiles/ivf_pq.dir
+/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/pq/CMakeFiles/edit_cache.dir
+/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/pq/CMakeFiles/rebuild_cache.dir
 /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/testing/CMakeFiles/test_ivf_flat.dir
+/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/testing/CMakeFiles/test_ivf_pq.dir
 /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/testing/CMakeFiles/edit_cache.dir
 /users/wajeehj/pathfinder/codes/ivf_flat_repository/build/testing/CMakeFiles/rebuild_cache.dir

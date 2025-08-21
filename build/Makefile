@@ -130,6 +130,19 @@ ivf_flat/fast:
 .PHONY : ivf_flat/fast
 
 #=============================================================================
+# Target rules for targets named ivf_pq
+
+# Build rule for target.
+ivf_pq: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ivf_pq
+.PHONY : ivf_pq
+
+# fast build rule for target.
+ivf_pq/fast:
+	$(MAKE) $(MAKESILENT) -f pq/CMakeFiles/ivf_pq.dir/build.make pq/CMakeFiles/ivf_pq.dir/build
+.PHONY : ivf_pq/fast
+
+#=============================================================================
 # Target rules for targets named test_ivf_flat
 
 # Build rule for target.
@@ -142,6 +155,19 @@ test_ivf_flat/fast:
 	$(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_flat.dir/build.make testing/CMakeFiles/test_ivf_flat.dir/build
 .PHONY : test_ivf_flat/fast
 
+#=============================================================================
+# Target rules for targets named test_ivf_pq
+
+# Build rule for target.
+test_ivf_pq: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_ivf_pq
+.PHONY : test_ivf_pq
+
+# fast build rule for target.
+test_ivf_pq/fast:
+	$(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_pq.dir/build.make testing/CMakeFiles/test_ivf_pq.dir/build
+.PHONY : test_ivf_pq/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -151,7 +177,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ivf_flat"
+	@echo "... ivf_pq"
 	@echo "... test_ivf_flat"
+	@echo "... test_ivf_pq"
 .PHONY : help
 
 

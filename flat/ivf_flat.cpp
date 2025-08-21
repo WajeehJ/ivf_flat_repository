@@ -62,7 +62,7 @@ void IndexIVFFlat::add(std::shared_ptr<IStorage> dataset) {
         float* v = reinterpret_cast<float*>(float_storage->get_vector(i));
         float best_distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[0].data())); 
         for(int j = 1; j < centroids.size(); j++) {
-            float distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[0].data())); 
+            float distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[j].data())); 
             if(distance < best_distance) {
                 best_distance = distance; 
                 best_index = j; 
@@ -70,6 +70,8 @@ void IndexIVFFlat::add(std::shared_ptr<IStorage> dataset) {
         }
 
         base_storage.emplace_back(v, v + dim); 
+
+ 
 
         inverted_list[best_index].push_back(i); 
     }

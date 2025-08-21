@@ -3,6 +3,7 @@
 	[
 		"/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/cmake_install.cmake",
 		"/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/flat/cmake_install.cmake",
+		"/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/pq/cmake_install.cmake",
 		"/users/wajeehj/pathfinder/codes/ivf_flat_repository/build/testing/cmake_install.cmake"
 	],
 	"Parallel" : false

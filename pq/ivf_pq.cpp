@@ -15,34 +15,38 @@ IndexIVFPQ::IndexIVFPQ(int d, int np, int nl, int b, int m) : dim(d), nprobe(np)
 }
 
 
-void IndexIVFPQ::train(vector<vector<float>> dataset) {
+void IndexIVFPQ::train(std::shared_ptr<IStorage> dataset) {
     //create coarse centroids 
     int k = pow(2, nbits); 
+
+    auto float_storage = std::dynamic_pointer_cast<ANNS::Storage<float>>(dataset);
 
     faiss::ClusteringParameters cp; 
     cp.verbose = false; 
     cp.niter = 20; 
     faiss::Clustering clus(dim, nlist, cp);
     faiss::IndexFlatL2 quantizer(dim);
-    clus.train(nlist, flattenDataset(dataset).data(), quantizer);
+    vector<float> data; 
+    data.reserve(float_storage->get_num_points()); 
+    for(int i = 0; i < float_storage->get_num_points(); i++) {
+        float* v = reinterpret_cast<float*>(float_storage->get_vector(i));
+        data.insert(data.end(), v, v + dim);
+    }
 
+    clus.train(float_storage->get_num_points(), data.data(), quantizer);
     centroids = convertToVectorOfVectors(clus.centroids.data(), nlist, dim); 
 
     vector<vector<vector<float>>> subspaces; 
     //create codebooks 
 
     //split every vector into M subspaces
-    for (const auto& vec : dataset) {
+    for (int i = 0; i < float_storage->get_num_points(); i++) {
+        float* vec = reinterpret_cast<float*>(float_storage->get_vector(i)); 
         for (int m = 0; m < m_val; ++m) {
 
-            //create a subvector of D/M, now we need to push to corresponding m subspace
-            vector<float> subvec = vector<float>(
-                vec.begin() + m * (dim / m_val),
-                vec.begin() + (m + 1) * (dim / m_val)
-            );
-
-            subspaces.at(m).push_back(subvec); 
-
+            int offset = m * (dim / m_val);
+            vector<float> subvec(vec + offset, vec + offset + (dim / m_val));
+            subspaces.at(m).push_back(subvec);
         }
     }
 
@@ -55,7 +59,7 @@ void IndexIVFPQ::train(vector<vector<float>> dataset) {
         cp.niter = 20; 
         faiss::Clustering clus(dim, k, cp);
         faiss::IndexFlatL2 quantizer(dim);
-        clus.train(nlist, flattenDataset(subspace).data(), quantizer);
+        clus.train(subspace.size(), flattenDataset(subspace).data(), quantizer);
 
         mth_centroid_list = convertToVectorOfVectors(clus.centroids.data(), nlist, dim); 
         
@@ -64,40 +68,40 @@ void IndexIVFPQ::train(vector<vector<float>> dataset) {
 }
 
 
-void IndexIVFPQ::add(vector<vector<float>> dataset) {
-    database = dataset; 
-
+void IndexIVFPQ::add(std::shared_ptr<IStorage> dataset) {
+    auto float_storage = std::dynamic_pointer_cast<ANNS::Storage<float>>(dataset);
+    base_storage.reserve(float_storage->get_num_points());
     //assign every vector to a coarse vector
-    for(int i = 0; i < dataset.size(); i++) {
+    for(int i = 0; i < float_storage->get_num_points(); i++) {
         int best_index = 0; 
-        float best_distance = euclideanDistance(dataset[i], centroids[0]); 
+        float* v = reinterpret_cast<float*>(float_storage->get_vector(i));
+        float best_distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[0].data()));
         for(int j = 1; j < centroids.size(); j++) {
-            float distance = euclideanDistance(dataset[i], centroids[j]); 
+            float distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[j].data()));
             if(distance < best_distance) {
                 best_distance = distance; 
                 best_index = j; 
             }
+
         }
 
 
         //create compressed vector 
+        vector<float> compressed_vector;
 
         for (int m = 0; m < m_val; ++m) {
 
             //create a subvector of D/M, now we need to push to corresponding m subspace
-            vector<float> subvec = vector<float>(
-                dataset[i].begin() + m * (dim / m_val),
-                dataset[i].begin() + (m + 1) * (dim / m_val)
-            );
+            int offset = m * (dim / m_val);
+            vector<float> subvec(v + offset, v + offset + (dim / m_val));
             
             vector<vector<float>> mth_centroid_list = codebooks[m]; 
-
-            vector<float> compressed_vector; 
+ 
 
             int centroid_index = 0; 
-            float best_centroid_distance = euclideanDistance(subvec, mth_centroid_list[0]); 
+            float best_centroid_distance = euclideanDistance(reinterpret_cast<const char *>(subvec.data()), reinterpret_cast<const char *>(mth_centroid_list[0].data())); 
             for(int j = 0; j < mth_centroid_list.size(); j++) {
-                float distance = euclideanDistance(subvec, mth_centroid_list[j]); 
+                float distance = euclideanDistance(reinterpret_cast<const char *>(subvec.data()), reinterpret_cast<const char *>(mth_centroid_list[j].data())); 
                 if(distance < best_distance) {
                     best_centroid_distance = distance; 
                     centroid_index = j; 
@@ -108,8 +112,9 @@ void IndexIVFPQ::add(vector<vector<float>> dataset) {
         }
 
         inverted_list[best_index].push_back(i);
+
+        base_storage.emplace_back(compressed_vector); 
         
-        database[i] = compressed_vector; 
     }
 }
 
@@ -122,13 +127,14 @@ struct Compare {
     }
 };
 
-vector<vector<int>> IndexIVFPQ::query(vector<vector<float>> dataset, int k) {
-    vector<vector<int>> results; 
-    results.resize(dataset.size()); 
-    for(int i = 0; i < dataset.size(); i++) {
+void IndexIVFPQ::query(std::shared_ptr<IStorage> dataset, int k, std::pair<IdxType, float>* results) {
+    auto float_storage = std::dynamic_pointer_cast<ANNS::Storage<float>>(dataset);
+    std::pair<IdxType, float>* _results = results; 
+    for(int i = 0; i < float_storage->get_num_points(); i++) {
+        float* v = reinterpret_cast<float*>(float_storage->get_vector(i));
         std::priority_queue<Pair, std::vector<Pair>, Compare> pq;
         for(int j = 0; j < centroids.size(); j++) {
-            pq.push({euclideanDistance(centroids.at(j), dataset.at(i)), i}); 
+            pq.push({euclideanDistance(reinterpret_cast<const char *>(centroids.at(j).data()), reinterpret_cast<const char *>(v)), i}); 
         }
 
         std::priority_queue<Pair, std::vector<Pair>, Compare> actual_vectors;
@@ -138,11 +144,11 @@ vector<vector<int>> IndexIVFPQ::query(vector<vector<float>> dataset, int k) {
             pq.pop(); 
             vector<int> centroid_vectors = inverted_list[index]; 
             for(int indexes : centroid_vectors) {
-                vector<float> compressed_vector = database[indexes]; 
+                vector<float> compressed_vector = base_storage[indexes]; 
                 float distance = 0; 
 
                 for(int m = 0; m < m_val; m++) {
-                    distance += euclideanDistance(codebooks[m][compressed_vector[m]], dataset[i]); 
+                    distance += euclideanDistance(reinterpret_cast<const char *>(codebooks[m][compressed_vector[m]].data()), reinterpret_cast<const char *>(v)); 
                 }
                 actual_vectors.push({distance, indexes}); 
             }
@@ -150,35 +156,29 @@ vector<vector<int>> IndexIVFPQ::query(vector<vector<float>> dataset, int k) {
 
 
 
-        vector<int> result; 
-        result.resize(k); 
         for(int j = 0; j < k; j++) {
             auto [distance, index] = actual_vectors.top(); 
             actual_vectors.pop(); 
-            result[j] = index; 
+            _results[i * k + j] = { index, distance }; 
         }
-
-        results[i] = result; 
     }
-
-    return results; 
 }
 
 
-float IndexIVFFlat::euclideanDistance(const vector<float>& a, const vector<float>& b) {
+float IndexIVFPQ::euclideanDistance(const char* a, const char* b) {
     ANNS::FloatL2DistanceHandler distance_handler; 
 
     float dist = distance_handler.compute(
-        reinterpret_cast<const char *>(a.data()),
-        reinterpret_cast<const char *>(b.data()),
-        a.size()
+        a,
+        b,
+        dim
     );
 
     return dist; 
 }
 
 
-vector<vector<float>> IndexIVFFlat::convertToVectorOfVectors(const float* centroids, int k, int d) {
+vector<vector<float>> IndexIVFPQ::convertToVectorOfVectors(const float* centroids, int k, int d) {
     vector<vector<float>> result(k, vector<float>(d));
 
     for (int i = 0; i < k; ++i) {
@@ -191,7 +191,7 @@ vector<vector<float>> IndexIVFFlat::convertToVectorOfVectors(const float* centro
 }
 
 
-vector<float> IndexIVFFlat::flattenDataset(const vector<vector<float>>& dataset) {
+vector<float> IndexIVFPQ::flattenDataset(const vector<vector<float>>& dataset) {
     if (dataset.empty()) return {};
 
     int num_points = dataset.size();

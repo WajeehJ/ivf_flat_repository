@@ -130,6 +130,20 @@ test_ivf_flat/fast:
 	cd /users/wajeehj/pathfinder/codes/ivf_flat_repository/build && $(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_flat.dir/build.make testing/CMakeFiles/test_ivf_flat.dir/build
 .PHONY : test_ivf_flat/fast
 
+# Convenience name for target.
+testing/CMakeFiles/test_ivf_pq.dir/rule:
+	cd /users/wajeehj/pathfinder/codes/ivf_flat_repository/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 testing/CMakeFiles/test_ivf_pq.dir/rule
+.PHONY : testing/CMakeFiles/test_ivf_pq.dir/rule
+
+# Convenience name for target.
+test_ivf_pq: testing/CMakeFiles/test_ivf_pq.dir/rule
+.PHONY : test_ivf_pq
+
+# fast build rule for target.
+test_ivf_pq/fast:
+	cd /users/wajeehj/pathfinder/codes/ivf_flat_repository/build && $(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_pq.dir/build.make testing/CMakeFiles/test_ivf_pq.dir/build
+.PHONY : test_ivf_pq/fast
+
 test_ivf_flat.o: test_ivf_flat.cpp.o
 .PHONY : test_ivf_flat.o
 
@@ -154,6 +168,30 @@ test_ivf_flat.cpp.s:
 	cd /users/wajeehj/pathfinder/codes/ivf_flat_repository/build && $(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_flat.dir/build.make testing/CMakeFiles/test_ivf_flat.dir/test_ivf_flat.cpp.s
 .PHONY : test_ivf_flat.cpp.s
 
+test_ivf_pq.o: test_ivf_pq.cpp.o
+.PHONY : test_ivf_pq.o
+
+# target to build an object file
+test_ivf_pq.cpp.o:
+	cd /users/wajeehj/pathfinder/codes/ivf_flat_repository/build && $(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_pq.dir/build.make testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o
+.PHONY : test_ivf_pq.cpp.o
+
+test_ivf_pq.i: test_ivf_pq.cpp.i
+.PHONY : test_ivf_pq.i
+
+# target to preprocess a source file
+test_ivf_pq.cpp.i:
+	cd /users/wajeehj/pathfinder/codes/ivf_flat_repository/build && $(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_pq.dir/build.make testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.i
+.PHONY : test_ivf_pq.cpp.i
+
+test_ivf_pq.s: test_ivf_pq.cpp.s
+.PHONY : test_ivf_pq.s
+
+# target to generate assembly for a file
+test_ivf_pq.cpp.s:
+	cd /users/wajeehj/pathfinder/codes/ivf_flat_repository/build && $(MAKE) $(MAKESILENT) -f testing/CMakeFiles/test_ivf_pq.dir/build.make testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.s
+.PHONY : test_ivf_pq.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -163,9 +201,13 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test_ivf_flat"
+	@echo "... test_ivf_pq"
 	@echo "... test_ivf_flat.o"
 	@echo "... test_ivf_flat.i"
 	@echo "... test_ivf_flat.s"
+	@echo "... test_ivf_pq.o"
+	@echo "... test_ivf_pq.i"
+	@echo "... test_ivf_pq.s"
 .PHONY : help
 
 
