@@ -1,0 +1,27 @@
+Loading data from ./data/sift/sift_base.bin and  ...
+- Warning: label file not found, set all labels to 1
+- Number of points: 1000000
+- Dimension: 128
+- Number of labels: 1
+- Time: 345 ms
+------------------------------------------------------------
+Loading data from ./data/sift/sift_query.bin and  ...
+- Warning: label file not found, set all labels to 1
+- Number of points: 10000
+- Dimension: 128
+- Number of labels: 1
+- Time: 3 ms
+------------------------------------------------------------
+Loading data from ./data/sift/sift_learn.bin and  ...
+- Warning: label file not found, set all labels to 1
+- Number of points: 100000
+- Dimension: 128
+- Number of labels: 1
+- Time: 33 ms
+------------------------------------------------------------
+centroids1000
+Ground truth loaded from ./data/gt.bin
+Start querying ...
+- Time cost: 97969ms
+- QPS: 102.073
+- Recall: 98.654%
