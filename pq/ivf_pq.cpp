@@ -12,6 +12,7 @@ using namespace std;
 IndexIVFPQ::IndexIVFPQ(int d, int np, int nl, int b, int m) : dim(d), nprobe(np), nlist(nl), nbits(b), m_val(m) {
     inverted_list.resize(nlist); 
     centroids.resize(nlist); 
+    codebooks.resize(m); 
 }
 
 
@@ -33,11 +34,13 @@ void IndexIVFPQ::train(std::shared_ptr<IStorage> dataset) {
         data.insert(data.end(), v, v + dim);
     }
 
+
     clus.train(float_storage->get_num_points(), data.data(), quantizer);
     centroids = convertToVectorOfVectors(clus.centroids.data(), nlist, dim); 
 
-    vector<vector<vector<float>>> subspaces; 
+    vector<vector<vector<float>>> subspaces(m_val); 
     //create codebooks 
+
 
     //split every vector into M subspaces
     for (int i = 0; i < float_storage->get_num_points(); i++) {
@@ -50,20 +53,22 @@ void IndexIVFPQ::train(std::shared_ptr<IStorage> dataset) {
         }
     }
 
-    //perform k means clustering on every subspace 
-    for(const auto& subspace : subspaces) {
 
+    //perform k means clustering on every subspace 
+    for(int i = 0; i < subspaces.size(); i++) {
+        vector<vector<float>> subspace = subspaces[i];
         vector<vector<float>> mth_centroid_list; 
         faiss::ClusteringParameters cp; 
         cp.verbose = false; 
         cp.niter = 20; 
-        faiss::Clustering clus(dim, k, cp);
-        faiss::IndexFlatL2 quantizer(dim);
-        clus.train(subspace.size(), flattenDataset(subspace).data(), quantizer);
+        int sub_dim = subspace[0].size();  
+        faiss::Clustering clus(sub_dim, k, cp);
+        faiss::IndexFlatL2 quantizer(sub_dim);
 
-        mth_centroid_list = convertToVectorOfVectors(clus.centroids.data(), nlist, dim); 
-        
-        codebooks.push_back(mth_centroid_list); 
+        std::vector<float> flat_data = flattenDataset(subspace);
+        clus.train(subspace.size(), flat_data.data(), quantizer);
+        mth_centroid_list = convertToVectorOfVectors(clus.centroids.data(), nlist, sub_dim); 
+        codebooks[i] = mth_centroid_list; 
     }
 }
 
@@ -75,9 +80,9 @@ void IndexIVFPQ::add(std::shared_ptr<IStorage> dataset) {
     for(int i = 0; i < float_storage->get_num_points(); i++) {
         int best_index = 0; 
         float* v = reinterpret_cast<float*>(float_storage->get_vector(i));
-        float best_distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[0].data()));
+        float best_distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[0].data()), dim);
         for(int j = 1; j < centroids.size(); j++) {
-            float distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[j].data()));
+            float distance = euclideanDistance(reinterpret_cast<const char *>(v), reinterpret_cast<const char *>(centroids[j].data()), dim);
             if(distance < best_distance) {
                 best_distance = distance; 
                 best_index = j; 
@@ -96,13 +101,14 @@ void IndexIVFPQ::add(std::shared_ptr<IStorage> dataset) {
             vector<float> subvec(v + offset, v + offset + (dim / m_val));
             
             vector<vector<float>> mth_centroid_list = codebooks[m]; 
+
  
 
             int centroid_index = 0; 
-            float best_centroid_distance = euclideanDistance(reinterpret_cast<const char *>(subvec.data()), reinterpret_cast<const char *>(mth_centroid_list[0].data())); 
+            float best_centroid_distance = euclideanDistance(reinterpret_cast<const char *>(subvec.data()), reinterpret_cast<const char *>(mth_centroid_list[0].data()), dim / m_val); 
             for(int j = 0; j < mth_centroid_list.size(); j++) {
-                float distance = euclideanDistance(reinterpret_cast<const char *>(subvec.data()), reinterpret_cast<const char *>(mth_centroid_list[j].data())); 
-                if(distance < best_distance) {
+                float distance = euclideanDistance(reinterpret_cast<const char *>(subvec.data()), reinterpret_cast<const char *>(mth_centroid_list[j].data()), dim / m_val); 
+                if(distance < best_centroid_distance) {
                     best_centroid_distance = distance; 
                     centroid_index = j; 
                 }
@@ -134,7 +140,7 @@ void IndexIVFPQ::query(std::shared_ptr<IStorage> dataset, int k, std::pair<IdxTy
         float* v = reinterpret_cast<float*>(float_storage->get_vector(i));
         std::priority_queue<Pair, std::vector<Pair>, Compare> pq;
         for(int j = 0; j < centroids.size(); j++) {
-            pq.push({euclideanDistance(reinterpret_cast<const char *>(centroids.at(j).data()), reinterpret_cast<const char *>(v)), i}); 
+            pq.push({euclideanDistance(reinterpret_cast<const char *>(centroids.at(j).data()), reinterpret_cast<const char *>(v), dim), j}); 
         }
 
         std::priority_queue<Pair, std::vector<Pair>, Compare> actual_vectors;
@@ -145,12 +151,15 @@ void IndexIVFPQ::query(std::shared_ptr<IStorage> dataset, int k, std::pair<IdxTy
             vector<int> centroid_vectors = inverted_list[index]; 
             for(int indexes : centroid_vectors) {
                 vector<float> compressed_vector = base_storage[indexes]; 
-                float distance = 0; 
+                float calculated_distance = 0; 
 
                 for(int m = 0; m < m_val; m++) {
-                    distance += euclideanDistance(reinterpret_cast<const char *>(codebooks[m][compressed_vector[m]].data()), reinterpret_cast<const char *>(v)); 
+                    int offset = m * (dim / m_val);
+                    vector<float> subvec(v + offset, v + offset + (dim / m_val));
+
+                    calculated_distance += euclideanDistance(reinterpret_cast<const char *>(codebooks[m][compressed_vector[m]].data()), reinterpret_cast<const char *>(subvec.data()), dim / m_val); 
                 }
-                actual_vectors.push({distance, indexes}); 
+                actual_vectors.push({calculated_distance, indexes}); 
             }
         }
 
@@ -165,13 +174,13 @@ void IndexIVFPQ::query(std::shared_ptr<IStorage> dataset, int k, std::pair<IdxTy
 }
 
 
-float IndexIVFPQ::euclideanDistance(const char* a, const char* b) {
+float IndexIVFPQ::euclideanDistance(const char* a, const char* b, int dimension) {
     ANNS::FloatL2DistanceHandler distance_handler; 
 
     float dist = distance_handler.compute(
         a,
         b,
-        dim
+        dimension
     );
 
     return dist; 

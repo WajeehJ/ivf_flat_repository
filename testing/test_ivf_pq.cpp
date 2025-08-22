@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
     my_index.train(train_storage);
     my_index.add(base_storage);
 
-    // perform queries 
+    //perform queries 
     auto num_queries = query_storage->get_num_points(); 
     auto results = new std::pair<ANNS::IdxType, float>[num_queries * K];
     auto gt = new std::pair<ANNS::IdxType, float>[num_queries * K];

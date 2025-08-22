@@ -8,7 +8,7 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o
  /users/wajeehj/pathfinder/codes/include/config.h
  /users/wajeehj/pathfinder/codes/include/distance.h
  /users/wajeehj/pathfinder/codes/include/storage.h
- /users/wajeehj/pathfinder/codes/ivf_flat_repository/flat/ivf_flat.h
+ /users/wajeehj/pathfinder/codes/ivf_flat_repository/pq/ivf_pq.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h

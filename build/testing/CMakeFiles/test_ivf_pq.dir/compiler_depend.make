@@ -7,7 +7,7 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
   /users/wajeehj/pathfinder/codes/include/config.h \
   /users/wajeehj/pathfinder/codes/include/distance.h \
   /users/wajeehj/pathfinder/codes/include/storage.h \
-  /users/wajeehj/pathfinder/codes/ivf_flat_repository/flat/ivf_flat.h \
+  /users/wajeehj/pathfinder/codes/ivf_flat_repository/pq/ivf_pq.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -1096,8 +1096,6 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vbmivlintrin.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vbmiintrin.h:
-
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vbmi2vlintrin.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vbmi2intrin.h:
@@ -1516,6 +1514,8 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/include/boost/type_traits/remove_cv.hpp:
 
+/usr/include/boost/type_traits/make_void.hpp:
+
 /usr/include/boost/type_traits/make_unsigned.hpp:
 
 /usr/include/boost/type_traits/is_void.hpp:
@@ -1874,6 +1874,22 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/include/boost/mpl/aux_/config/msvc_typename.hpp:
 
+/usr/include/x86_64-linux-gnu/bits/environments.h:
+
+/usr/include/boost/mpl/aux_/config/preprocessor.hpp:
+
+/usr/include/boost/smart_ptr/detail/sp_thread_pause.hpp:
+
+/usr/include/boost/mpl/aux_/config/integral.hpp:
+
+/usr/include/boost/concept/detail/concept_undef.hpp:
+
+/usr/include/boost/math/policies/policy.hpp:
+
+/usr/include/boost/type_traits/decay.hpp:
+
+/usr/include/boost/numeric/conversion/bounds.hpp:
+
 /usr/include/boost/mpl/clear.hpp:
 
 /usr/include/c++/11/bits/stl_pair.h:
@@ -1972,26 +1988,6 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/include/boost/core/noncopyable.hpp:
 
-/usr/include/x86_64-linux-gnu/bits/environments.h:
-
-/usr/include/boost/mpl/aux_/config/preprocessor.hpp:
-
-/usr/include/boost/smart_ptr/detail/sp_thread_pause.hpp:
-
-/usr/include/boost/mpl/aux_/config/integral.hpp:
-
-/usr/include/boost/concept/detail/concept_undef.hpp:
-
-/usr/include/boost/math/policies/policy.hpp:
-
-/usr/include/boost/type_traits/decay.hpp:
-
-/usr/include/boost/numeric/conversion/bounds.hpp:
-
-/usr/include/boost/type_traits/make_void.hpp:
-
-/users/wajeehj/pathfinder/codes/ivf_flat_repository/flat/ivf_flat.h:
-
 /usr/include/boost/container/container_fwd.hpp:
 
 /usr/include/boost/config/stdlib/libstdcpp3.hpp:
@@ -2028,6 +2024,14 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/include/boost/lexical_cast/detail/is_character.hpp:
 
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
+/usr/include/boost/config/no_tr1/complex.hpp:
+
+/usr/include/c++/11/ext/new_allocator.h:
+
+/usr/include/boost/mpl/same_as.hpp:
+
 /usr/include/boost/mpl/push_back.hpp:
 
 /usr/include/boost/mpl/aux_/msvc_never_true.hpp:
@@ -2047,18 +2051,6 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 /usr/lib/gcc/x86_64-linux-gnu/11/include/serializeintrin.h:
 
 /usr/include/boost/iterator/iterator_traits.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp:
-
-/usr/include/boost/lexical_cast/detail/converter_lexical_streams.hpp:
-
-/usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/boost/config/no_tr1/complex.hpp:
-
-/usr/include/c++/11/ext/new_allocator.h:
-
-/usr/include/boost/mpl/same_as.hpp:
 
 /usr/include/c++/11/bits/hashtable.h:
 
@@ -2106,7 +2098,13 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/include/boost/concept/detail/general.hpp:
 
-/users/wajeehj/pathfinder/codes/include/storage.h:
+/usr/include/boost/mpl/aux_/preprocessed/gcc/bind_fwd.hpp:
+
+/usr/include/boost/lexical_cast/detail/converter_lexical_streams.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vbmiintrin.h:
+
+/users/wajeehj/pathfinder/codes/ivf_flat_repository/pq/ivf_pq.h:
 
 /usr/include/wctype.h:
 
@@ -2116,6 +2114,40 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/include/boost/predef/make.h:
 
+/usr/include/boost/mpl/aux_/config/static_constant.hpp:
+
+/usr/include/boost/mpl/lambda_fwd.hpp:
+
+/usr/include/boost/preprocessor/iteration/iterate.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+
+/usr/include/boost/type_traits/has_plus_assign.hpp:
+
+/usr/include/boost/preprocessor/slot/slot.hpp:
+
+/usr/include/boost/program_options/errors.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/wmmintrin.h:
+
+/usr/include/boost/any.hpp:
+
+/usr/include/boost/preprocessor/seq/seq.hpp:
+
+/usr/include/boost/iterator/iterator_adaptor.hpp:
+
+/usr/include/boost/mpl/aux_/type_wrapper.hpp:
+
+/usr/include/boost/preprocessor/list/adt.hpp:
+
+/users/wajeehj/pathfinder/codes/include/storage.h:
+
+/usr/include/boost/mpl/contains.hpp:
+
+/usr/include/boost/core/demangle.hpp:
+
+/usr/include/boost/mpl/limits/vector.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
 
 /usr/include/c++/11/backward/auto_ptr.h:
@@ -2123,6 +2155,10 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 /usr/include/boost/assert.hpp:
 
 /usr/include/boost/mpl/list/aux_/begin_end.hpp:
+
+/usr/include/boost/mpl/list/aux_/O1_size.hpp:
+
+/usr/include/boost/preprocessor/arithmetic/sub.hpp:
 
 /usr/include/boost/mpl/aux_/preprocessed/gcc/apply.hpp:
 
@@ -2200,6 +2236,10 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/include/boost/mpl/list/aux_/clear.hpp:
 
+/usr/include/boost/detail/select_type.hpp:
+
+/usr/include/boost/mpl/aux_/lambda_support.hpp:
+
 /usr/include/stdlib.h:
 
 /usr/include/boost/type_traits/remove_pointer.hpp:
@@ -2212,32 +2252,6 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 
 /usr/include/boost/assert/source_location.hpp:
 
-/usr/include/boost/preprocessor/arithmetic/sub.hpp:
-
-/usr/include/boost/mpl/list/aux_/O1_size.hpp:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/wmmintrin.h:
-
-/usr/include/boost/any.hpp:
-
-/usr/include/boost/preprocessor/seq/seq.hpp:
-
-/usr/include/boost/mpl/contains.hpp:
-
-/usr/include/boost/core/demangle.hpp:
-
-/usr/include/boost/mpl/aux_/lambda_support.hpp:
-
-/usr/include/boost/detail/select_type.hpp:
-
-/usr/include/boost/mpl/limits/vector.hpp:
-
-/usr/include/boost/iterator/iterator_adaptor.hpp:
-
-/usr/include/boost/mpl/aux_/type_wrapper.hpp:
-
-/usr/include/boost/preprocessor/list/adt.hpp:
-
 /usr/lib/gcc/x86_64-linux-gnu/11/include/f16cintrin.h:
 
 /usr/include/boost/mpl/aux_/preprocessed/gcc/apply_wrap.hpp:
@@ -2245,20 +2259,6 @@ testing/CMakeFiles/test_ivf_pq.dir/test_ivf_pq.cpp.o: /users/wajeehj/pathfinder/
 /usr/include/boost/mpl/arg_fwd.hpp:
 
 /usr/include/boost/concept/detail/has_constraints.hpp:
-
-/usr/include/boost/mpl/aux_/config/static_constant.hpp:
-
-/usr/include/boost/mpl/lambda_fwd.hpp:
-
-/usr/include/boost/preprocessor/iteration/iterate.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
-
-/usr/include/boost/type_traits/has_plus_assign.hpp:
-
-/usr/include/boost/preprocessor/slot/slot.hpp:
-
-/usr/include/boost/program_options/errors.hpp:
 
 /usr/include/c++/11/bits/nested_exception.h:
 

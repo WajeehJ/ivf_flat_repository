@@ -17,7 +17,7 @@ class IndexIVFPQ {
 
     private: 
 
-        float euclideanDistance(const char* a, const char* b); 
+        float euclideanDistance(const char* a, const char* b, int dimension); 
         vector<float> flattenDataset(const vector<vector<float>>& dataset);
         vector<vector<float>> convertToVectorOfVectors(const float* centroids, int k, int d);
         int dim; 
